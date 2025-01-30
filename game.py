@@ -9,6 +9,8 @@ WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Save The Turtles!")
 
+
+
 # Colors
 WHITE = (255, 255, 255)
 
@@ -37,8 +39,8 @@ trash = spawn_trash()
 
 turtle = spawn_turtle()
 
-trash_list = [spawn_trash() for _ in range(5)]
-turtle_list = [spawn_turtle() for _ in range(5)]
+trash_list = [spawn_trash() for _ in range(4)]
+turtle_list = [spawn_turtle() for _ in range(4)]
 
 # Score tracking
 score = 0
@@ -54,7 +56,8 @@ while running:
         screen.blit(TRASH_IMAGE, (trash.x, trash.y))
     
     # Draw turtle
-    screen.blit(TURTLE_IMAGE, (turtle.x, turtle.y))
+    for turtle in turtle_list:
+        screen.blit(TURTLE_IMAGE, (turtle.x, turtle.y))
 
     # Display score
     score_text = font.render(f"Score: {score}", True, WHITE)
@@ -64,16 +67,28 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        
         if event.type == pygame.MOUSEBUTTONDOWN:  # Detect mouse click
             for trash in trash_list[:]: #Copy trash_list to maintain range/spawn number
                 if trash.collidepoint(event.pos):  # If clicked on trash
-                    score += 5
+                    score += 3
                     trash_list.remove(trash)  # Delete clicked trash
                     trash_list.append(spawn_trash()) #Spawn new trash
+
         if event.type == pygame.MOUSEBUTTONDOWN:  # Detect mouse click
-            if turtle.collidepoint(event.pos):  # If clicked on trash
-                score -= 5
-                turtle = spawn_turtle()  # Spawn new trash
+            for turtle in turtle_list[:]: #Copy trash_list to maintain range/spawn number
+                if turtle.collidepoint(event.pos):  # If clicked on trash
+                    score -= 5
+                    turtle_list.remove(turtle)  # Delete clicked trash
+                    turtle_list.append(spawn_turtle()) #Spawn new trash
+
+    if score > 30:
+        win_message = font.render("Congrats", True, WHITE)
+        screen.blit(win_message, (400, 300))
+
+    if score < 0:
+        turtle_killer = font.render("Please try and save the turtles!", True, WHITE)
+        screen.blit(turtle_killer, (250, 250))
 
     pygame.display.flip()  # Update display
 
