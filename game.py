@@ -14,7 +14,7 @@ WHITE = (255, 255, 255)
 BLUE = (135, 206, 250)
 
 # Load trash image (use a placeholder if you don't have one yet)
-TRASH_IMAGE = pygame.image.load("trash.png")  # Replace with your image file
+TRASH_IMAGE = pygame.image.load("./assets/trash.png")  # Replace with your image file
 TRASH_IMAGE = pygame.transform.scale(TRASH_IMAGE, (50, 50))  # Resize
 
 # Trash object (random position)
